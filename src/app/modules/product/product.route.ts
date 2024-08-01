@@ -1,4 +1,3 @@
-
 import express from 'express';
 import { productControllers } from './product.controller';
 import { validateProductSchema } from './product.validation';
@@ -16,7 +15,8 @@ router.get('/', productControllers.getAllProduct);
 
 router.get('/:id', productControllers.getSingleProduct);
 
-router.delete('/:id', productControllers.deleteProduct);
+
+router.delete('/delete-product', productControllers.deleteProduct);
 
 router.put(
   '/update-product',
@@ -24,8 +24,11 @@ router.put(
   productControllers.updateProduct,
 );
 
+router.post(
+  '/check-availability',
+  productControllers.checkAvailabilityOfProduct,
+);
 
-
-
+router.post('/create-order', productControllers.orderCreate);
 
 export const ProductRoutes = router;

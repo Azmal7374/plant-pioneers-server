@@ -2,23 +2,10 @@
 import { FilterQuery } from 'mongoose';
 import ProductModel from './product.model';
 import { TProduct } from './product.interface';
+import OrderModel from '../order/order.model';
+import { TOrder, TQuery } from './product.utlis';
 
-type TQuery = {
-  category?: string;
-  sort?: string;
-  search?: string;
-  price?: 'asc' | 'desc';
-  page?: number;
-  limit?: number;
-};
 
-export type TOrder = {
-  customerName: string;
-  customerEmail: string;
-  customerPhone: string;
-  customerAddress: string;
-  orderItems: [TProduct];
-};
 
 const createProductInToDB = async (payload: TProduct) => {
   const result = await ProductModel.create(payload);
@@ -26,7 +13,7 @@ const createProductInToDB = async (payload: TProduct) => {
 };
 
 const getAllProductInToDB = async (query: TQuery) => {
-  const { category, sort, search, price, page = 1, limit = 4 } = query;
+  const { category, sort, search, price, page = 1, limit = 6 } = query;
   const queryObject: FilterQuery<TProduct> = {};
 
   if (category) {
@@ -74,11 +61,65 @@ const updateProductInToDB = async (id: string, payload: TProduct) => {
   return result;
 }
 
+
+const productAvailablilityCheckInToDB = async (id: string) => {
+  const result = await ProductModel.findById(id);
+
+  if ((result?.quantity as number) <= 0) {
+    throw new Error('Not Available');
+  }
+
+  return result;
+};
+
+
+const orderCreateInToDB= async (payload: TOrder) => {
+  const detailedOrderItems = await Promise.all(
+    payload.orderItems.map(async (item) => {
+      const product = await ProductModel.findById(item._id);
+      if (!product) {
+        throw new Error("Product is not found");
+      }
+
+    
+      if (product.quantity < item.quantity) {
+        throw new Error("Stock Out!!");
+      }
+
+      //  quantity update
+      product.quantity -= item.quantity;
+      await product.save();
+
+      return {
+        _id: product._id,
+        title: product.title,
+        price: product.price,
+        quantity: item.quantity,
+        image: product.image,
+        category: product.category,
+      };
+    }),
+  );
+
+  const order = await OrderModel.create({
+    name: payload.name,
+    email: payload.email,
+    phone: payload.phone,
+    address: payload.address,
+    orderItems: detailedOrderItems,
+  });
+
+  return order;
+};
+
+
 export const productServices = {
   createProductInToDB,
   getAllProductInToDB,
   deleteProductFromDB,
   getSingleProductFromDB,
   updateProductInToDB,
+  productAvailablilityCheckInToDB,
+  orderCreateInToDB,
 
 };

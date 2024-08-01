@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { TProduct } from './product.interface';
 
-const ExampleSchema = new mongoose.Schema<TProduct>({
+const ProductSchema = new mongoose.Schema<TProduct>({
   title: {
     type: String,
     required: true,
@@ -34,6 +34,6 @@ const ExampleSchema = new mongoose.Schema<TProduct>({
   },
 });
 
-const ProductModel = mongoose.model<TProduct>('Product', ExampleSchema);
+const ProductModel = mongoose.model<TProduct>('Product', ProductSchema);
 
 export default ProductModel;

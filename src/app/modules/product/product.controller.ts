@@ -1,7 +1,8 @@
 import { RequestHandler } from 'express';
 import sendResponse from '../../utils/sendResponse/sendResponse';
-import { productServices } from './product.service';
+import { productServices} from './product.service';
 import httpStatus from 'http-status';
+import { TOrder } from './product.utlis';
 
 const createProduct: RequestHandler = async (req, res, next) => {
   try {
@@ -34,6 +35,9 @@ const getAllProduct: RequestHandler = async (req, res, next) => {
   }
 };
 
+
+
+
 const getSingleProduct: RequestHandler = async (req, res, next) => {
   try {
     const result = await productServices.getSingleProductFromDB(req.params.id);
@@ -48,6 +52,8 @@ const getSingleProduct: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+
 const deleteProduct: RequestHandler = async (req, res, next) => {
   try {
     const result = await productServices.deleteProductFromDB(req.query.id as string);
@@ -81,11 +87,46 @@ const updateProduct: RequestHandler = async (req, res, next) => {
   }
 };
 
+
+
+const checkAvailabilityOfProduct: RequestHandler = async (req, res, next) => {
+  try {
+    const result = await productServices.productAvailablilityCheckInToDB(
+      req.query.id as string,
+    );
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Show Available Product!!',
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const orderCreate: RequestHandler = async (req, res, next) => {
+  try {
+    const result = await productServices.orderCreateInToDB(req.body as TOrder);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Order is Created succesfully!!',
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const productControllers = {
   createProduct,
   getAllProduct,
   getSingleProduct,
   deleteProduct,
-  updateProduct
-
+  updateProduct,
+  checkAvailabilityOfProduct,
+  orderCreate
 };
