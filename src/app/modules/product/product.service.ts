@@ -5,8 +5,6 @@ import { TProduct } from './product.interface';
 import OrderModel from '../order/order.model';
 import { TOrder, TQuery } from './product.utlis';
 
-
-
 const createProductInToDB = async (payload: TProduct) => {
   const result = await ProductModel.create(payload);
   return result;
@@ -39,7 +37,7 @@ const getAllProductInToDB = async (query: TQuery) => {
   const products = await result.skip(avoid).limit(limit).exec();
   const total_products = await ProductModel.countDocuments(queryObject);
 
-  return { data: products,  total_products };
+  return { data: products, total_products };
 };
 
 const getSingleProductFromDB = async (param: any) => {
@@ -55,12 +53,11 @@ const deleteProductFromDB = async (id: string) => {
 const updateProductInToDB = async (id: string, payload: TProduct) => {
   const result = await ProductModel.findByIdAndUpdate(
     id,
-    {$set: payload},
-    {new: true, runValidators: true}
+    { $set: payload },
+    { new: true, runValidators: true },
   );
   return result;
-}
-
+};
 
 const productAvailablilityCheckInToDB = async (id: string) => {
   const result = await ProductModel.findById(id);
@@ -72,18 +69,16 @@ const productAvailablilityCheckInToDB = async (id: string) => {
   return result;
 };
 
-
-const orderCreateInToDB= async (payload: TOrder) => {
+const orderCreateInToDB = async (payload: TOrder) => {
   const detailedOrderItems = await Promise.all(
     payload.orderItems.map(async (item) => {
       const product = await ProductModel.findById(item._id);
       if (!product) {
-        throw new Error("Product is not found");
+        throw new Error('Product is not found');
       }
 
-    
       if (product.quantity < item.quantity) {
-        throw new Error("Stock Out!!");
+        throw new Error('Stock Out!!');
       }
 
       //  quantity update
@@ -112,7 +107,6 @@ const orderCreateInToDB= async (payload: TOrder) => {
   return order;
 };
 
-
 export const productServices = {
   createProductInToDB,
   getAllProductInToDB,
@@ -121,5 +115,4 @@ export const productServices = {
   updateProductInToDB,
   productAvailablilityCheckInToDB,
   orderCreateInToDB,
-
 };

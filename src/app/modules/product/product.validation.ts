@@ -15,7 +15,6 @@ const productValidation = z.object({
   }),
 });
 
-
 const productUpdateValidation = z.object({
   body: z.object({
     title: z.string().optional(),
@@ -32,8 +31,7 @@ const productUpdateValidation = z.object({
   }),
 });
 
-
 export const validateProductSchema = {
   productValidation,
-  productUpdateValidation
+  productUpdateValidation,
 };

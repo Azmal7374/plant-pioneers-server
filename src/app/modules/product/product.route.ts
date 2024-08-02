@@ -15,7 +15,6 @@ router.get('/', productControllers.getAllProduct);
 
 router.get('/:id', productControllers.getSingleProduct);
 
-
 router.delete('/delete-product', productControllers.deleteProduct);
 
 router.put(

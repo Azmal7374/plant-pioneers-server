@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 import sendResponse from '../../utils/sendResponse/sendResponse';
-import { productServices} from './product.service';
+import { productServices } from './product.service';
 import httpStatus from 'http-status';
 import { TOrder } from './product.utlis';
 
@@ -35,9 +35,6 @@ const getAllProduct: RequestHandler = async (req, res, next) => {
   }
 };
 
-
-
-
 const getSingleProduct: RequestHandler = async (req, res, next) => {
   try {
     const result = await productServices.getSingleProductFromDB(req.params.id);
@@ -53,10 +50,11 @@ const getSingleProduct: RequestHandler = async (req, res, next) => {
   }
 };
 
-
 const deleteProduct: RequestHandler = async (req, res, next) => {
   try {
-    const result = await productServices.deleteProductFromDB(req.query.id as string);
+    const result = await productServices.deleteProductFromDB(
+      req.query.id as string,
+    );
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
@@ -86,8 +84,6 @@ const updateProduct: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
-
-
 
 const checkAvailabilityOfProduct: RequestHandler = async (req, res, next) => {
   try {
@@ -128,5 +124,5 @@ export const productControllers = {
   deleteProduct,
   updateProduct,
   checkAvailabilityOfProduct,
-  orderCreate
+  orderCreate,
 };
