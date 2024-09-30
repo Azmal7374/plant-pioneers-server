@@ -28,6 +28,6 @@ router.post(
   productControllers.checkAvailabilityOfProduct,
 );
 
-router.post('/create-order', productControllers.orderCreate);
+router.post('/create-order', productControllers.createOrder);
 
 export const ProductRoutes = router;

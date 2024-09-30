@@ -1,19 +1,19 @@
 import mongoose from 'mongoose';
 
 const OrderSchema = new mongoose.Schema({
-  name: {
+  customerName: {
     type: String,
     required: true,
   },
-  email: {
+  customerEmail: {
     type: String,
     required: true,
   },
-  phone: {
+  customerPhone: {
     type: String,
     required: true,
   },
-  address: {
+  customerAddress: {
     type: String,
     required: true,
   },

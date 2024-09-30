@@ -8,3 +8,21 @@ export type TProduct = {
   rating: number;
   quantity: number;
 };
+
+
+export type TQuery = {
+  category?: string;
+  sortBy?: string;
+  search?: string;
+  priceOrder?: 'asc' | 'desc';
+  page?: number;
+  limit?: number;
+};
+
+export type TOrder = {
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+  customerAddress: string;
+  orderItems: [TProduct];
+};

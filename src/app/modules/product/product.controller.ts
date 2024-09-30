@@ -1,20 +1,13 @@
 import { RequestHandler } from 'express';
 import sendResponse from '../../utils/sendResponse/sendResponse';
-import { productServices } from './product.service';
-import httpStatus from 'http-status';
-import { TOrder } from './product.utlis';
+import { productServices} from './product.service';
+import { TOrder } from './product.interface';
 
 const createProduct: RequestHandler = async (req, res, next) => {
   try {
-    const result = await productServices.createProductInToDB(req.body);
-    //  console.log(result)
+    const result = await productServices.createProduct(req.body);
 
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'Product is created succesfully!!',
-      data: result,
-    });
+    sendResponse(res, result, 'Product is created succesfully');
   } catch (error) {
     next(error);
   }
@@ -22,14 +15,9 @@ const createProduct: RequestHandler = async (req, res, next) => {
 
 const getAllProduct: RequestHandler = async (req, res, next) => {
   try {
-    const result = await productServices.getAllProductInToDB(req.query);
+    const result = await productServices.getAllProduct(req.query);
 
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'All Product Fetched succesfully!!',
-      data: result,
-    });
+    sendResponse(res, result, 'Products fetched succesfully');
   } catch (error) {
     next(error);
   }
@@ -37,14 +25,9 @@ const getAllProduct: RequestHandler = async (req, res, next) => {
 
 const getSingleProduct: RequestHandler = async (req, res, next) => {
   try {
-    const result = await productServices.getSingleProductFromDB(req.params.id);
+    const result = await productServices.getSingleProduct(req.params.id);
 
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'Single Product Fetched succesfully!!',
-      data: result,
-    });
+    sendResponse(res, result, 'Products fetched succesfully');
   } catch (error) {
     next(error);
   }
@@ -52,16 +35,9 @@ const getSingleProduct: RequestHandler = async (req, res, next) => {
 
 const deleteProduct: RequestHandler = async (req, res, next) => {
   try {
-    const result = await productServices.deleteProductFromDB(
-      req.query.id as string,
-    );
+    const result = await productServices.deleteProduct(req.query.id as string);
 
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'Product is Deleted succesfully!!',
-      data: result,
-    });
+    sendResponse(res, result, 'Product deleted succesfully');
   } catch (error) {
     next(error);
   }
@@ -69,17 +45,12 @@ const deleteProduct: RequestHandler = async (req, res, next) => {
 
 const updateProduct: RequestHandler = async (req, res, next) => {
   try {
-    const result = await productServices.updateProductInToDB(
+    const result = await productServices.updateProduct(
       req.query.id as string,
       req.body,
     );
 
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'Product is  Updated succesfully!!',
-      data: result,
-    });
+    sendResponse(res, result, 'Product updated succesfully!');
   } catch (error) {
     next(error);
   }
@@ -87,31 +58,21 @@ const updateProduct: RequestHandler = async (req, res, next) => {
 
 const checkAvailabilityOfProduct: RequestHandler = async (req, res, next) => {
   try {
-    const result = await productServices.productAvailablilityCheckInToDB(
+    const result = await productServices.checkAvailabilityOfProduct(
       req.query.id as string,
     );
 
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'Show Available Product!!',
-      data: result,
-    });
+    sendResponse(res, result, 'Product updated succesfully!');
   } catch (error) {
     next(error);
   }
 };
 
-const orderCreate: RequestHandler = async (req, res, next) => {
+const createOrder: RequestHandler = async (req, res, next) => {
   try {
-    const result = await productServices.orderCreateInToDB(req.body as TOrder);
+    const result = await productServices.createOrder(req.body as TOrder);
 
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'Order is Created succesfully!!',
-      data: result,
-    });
+    sendResponse(res, result, 'Order created succesfully!');
   } catch (error) {
     next(error);
   }
@@ -120,9 +81,9 @@ const orderCreate: RequestHandler = async (req, res, next) => {
 export const productControllers = {
   createProduct,
   getAllProduct,
-  getSingleProduct,
   deleteProduct,
   updateProduct,
+  getSingleProduct,
   checkAvailabilityOfProduct,
-  orderCreate,
+  createOrder,
 };
