@@ -8,11 +8,11 @@ const app: Application = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'https://plant-pioneers-client.vercel.app'],
+    origin: ['http://localhost:5173', true],
   }),
 );
 // application routes
-app.use('/api/v1', router);
+app.use('/api/v1/', router);
 
 app.use(globalErrorHandler);
 

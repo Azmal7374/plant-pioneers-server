@@ -20,9 +20,9 @@ export type TQuery = {
 };
 
 export type TOrder = {
-  customerName: string;
-  customerEmail: string;
-  customerPhone: string;
-  customerAddress: string;
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
   orderItems: [TProduct];
 };

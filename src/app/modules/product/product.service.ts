@@ -101,10 +101,10 @@ const createOrder = async (payload: TOrder) => {
 
   // Create the order with the detailed items
   const order = await OrderModel.create({
-    customerName: payload.customerName,
-    customerEmail: payload.customerEmail,
-    customerPhone: payload.customerPhone,
-    customerAddress: payload.customerAddress,
+    name: payload.name,
+    email: payload.email,
+    phone: payload.phone,
+    address: payload.address,
     orderItems: detailedOrderItems,
   });
 
